@@ -15,7 +15,7 @@ struct TravelDetailsModule {
     let viewController: DetailsViewController
 
     init(cell: UIView, travel: Travel) {
-        router = TravelRouter(cell: cell)
+        router = TravelRouter()
         viewModel = DetailsViewModel(router: router, travel: travel)
         viewController = DetailsViewController(viewModel: viewModel)
         router.viewController = viewController

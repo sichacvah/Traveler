@@ -10,7 +10,7 @@ import UIKit
 import Nuke
 
 class DetailsViewController: UIViewController, UIScrollViewDelegate {
-    private var viewModel: DetailsViewModel?
+    public var viewModel: DetailsViewModel?
     private let titleView: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -183,8 +183,8 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
         scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
         
-        view.addGestureRecognizer(dismissalPanGesture)
-        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
+//        view.addGestureRecognizer(dismissalPanGesture)
+//        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
         view.layoutIfNeeded()
     }
     

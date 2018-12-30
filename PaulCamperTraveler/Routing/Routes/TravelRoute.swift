@@ -18,13 +18,6 @@ extension TravelRoute where Self: RouterProtocol {
         return PushTransition()
     }
     
-    func getAnimator(cell: TravelCollectionViewCell) -> CardPresentationAnimator {
-        let currentCellFrame = cell.layer.presentation()!.frame
-        let cardPresentationFrameOnScreen = cell.superview!.convert(currentCellFrame, to: nil)
-        let params = CardPresentationAnimator.Params(fromCardFrame: cardPresentationFrameOnScreen, fromCell: cell)
-        return CardPresentationAnimator(params: params)
-    }
-    
     func openTravel(for travel: Travel, cell: UIView) {
         let detailsModule = TravelDetailsModule(cell: cell, travel: travel)
         let currentCellFrame = cell.layer.presentation()!.frame

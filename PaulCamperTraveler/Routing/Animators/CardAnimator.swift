@@ -43,7 +43,8 @@ class PresentCardAnimator: NSObject, UIViewControllerAnimatedTransitioning, Anim
         let widthContraint = fromView.widthAnchor.constraint(equalToConstant: containerView.frame.width)
         let heightConstraint = fromView.heightAnchor.constraint(equalToConstant: containerView.frame.height)
         let horizontalConstraint = fromView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
-        NSLayoutConstraint.activate([topConstraint, widthContraint, heightConstraint, horizontalConstraint])
+        let constraints = [topConstraint, widthContraint, heightConstraint, horizontalConstraint]
+        NSLayoutConstraint.activate(constraints)
 
         toScreen.statusBarStyle = .lightContent
         toScreen.setNeedsStatusBarAppearanceUpdate()
@@ -61,7 +62,11 @@ class PresentCardAnimator: NSObject, UIViewControllerAnimatedTransitioning, Anim
             toScreen.statusBarStyle = .default
             toScreen.setNeedsStatusBarAppearanceUpdate()
         }, completion: { _ in
-            fromView.removeFromSuperview()
+            if transitionContext.transitionWasCancelled {
+                containerView.removeConstraints(containerView.constraints)
+                fromView.removeConstraints(constraints)
+                fromView.edges(to: containerView, top: 0)
+            }
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
         

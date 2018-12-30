@@ -18,7 +18,6 @@
 		EE0EFA1221D002BE008A6601 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EFA1121D002BE008A6601 /* Router.swift */; };
 		EE0EFA1521D00577008A6601 /* TravelRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EFA1421D00577008A6601 /* TravelRoute.swift */; };
 		EE0EFA1721D00B1E008A6601 /* TravelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EFA1621D00B1E008A6601 /* TravelsViewModel.swift */; };
-		EE1F69C821D0AB9700ABDE41 /* CardPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1F69C721D0AB9700ABDE41 /* CardPresentationAnimator.swift */; };
 		EE6732C821D2094900BD72E5 /* TravelDetailsModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732C721D2094900BD72E5 /* TravelDetailsModuleBuilder.swift */; };
 		EE6732CA21D209E400BD72E5 /* TravelsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732C921D209E400BD72E5 /* TravelsRouter.swift */; };
 		EE6732CC21D20A3C00BD72E5 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732CB21D20A3C00BD72E5 /* DetailsViewModel.swift */; };
@@ -52,7 +51,6 @@
 		EE0EFA1121D002BE008A6601 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EE0EFA1421D00577008A6601 /* TravelRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelRoute.swift; sourceTree = "<group>"; };
 		EE0EFA1621D00B1E008A6601 /* TravelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsViewModel.swift; sourceTree = "<group>"; };
-		EE1F69C721D0AB9700ABDE41 /* CardPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPresentationAnimator.swift; sourceTree = "<group>"; };
 		EE6732C721D2094900BD72E5 /* TravelDetailsModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelDetailsModuleBuilder.swift; sourceTree = "<group>"; };
 		EE6732C921D209E400BD72E5 /* TravelsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsRouter.swift; sourceTree = "<group>"; };
 		EE6732CB21D20A3C00BD72E5 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				EE0EFA0F21D00086008A6601 /* Animator.swift */,
-				EE1F69C721D0AB9700ABDE41 /* CardPresentationAnimator.swift */,
 				EE6732CF21D2214800BD72E5 /* CardAnimator.swift */,
 			);
 			path = Animators;
@@ -375,7 +372,6 @@
 				EE0EF96721CCD56E008A6601 /* LayoutHelper.swift in Sources */,
 				EE0EF8C821CAB1CD008A6601 /* UIView+extensions.swift in Sources */,
 				EE0EFA1221D002BE008A6601 /* Router.swift in Sources */,
-				EE1F69C821D0AB9700ABDE41 /* CardPresentationAnimator.swift in Sources */,
 				EEDB9A1C21CA124D0054C1DD /* TravelCollectionViewCell.swift in Sources */,
 				EE0EFA0021CD0989008A6601 /* DetailsViewController.swift in Sources */,
 				EE6732C821D2094900BD72E5 /* TravelDetailsModuleBuilder.swift in Sources */,
