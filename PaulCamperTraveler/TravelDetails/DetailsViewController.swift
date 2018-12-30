@@ -149,7 +149,20 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         closeView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
         closeView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
         closeView.addTarget(self, action: #selector(handleClose), for: .touchUpInside)
-        
+    
+        if let navigationController = self.navigationController {
+            let backgroundView = UIView()
+            backgroundView.backgroundColor = .gray
+            backgroundView.frame = navigationController.view.frame
+            navigationController.view.insertSubview(backgroundView, at: 0)
+            let blurEffect = UIBlurEffect(style: .light)
+            let blurEffectView = UIVisualEffectView(effect: blurEffect)
+            blurEffectView.frame = navigationController.view.bounds
+            blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            navigationController.view.insertSubview(blurEffectView, at: 1)
+            
+        }
+    
         self.setupPanGesture()
     }
     

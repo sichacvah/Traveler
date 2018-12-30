@@ -51,13 +51,18 @@ class TravelCollectionViewController: UICollectionViewController, UICollectionVi
         return CGSize(width: collectionView.frame.size.width, height: 450)
     }
     
+    func selectTravel(travel: Travel, cell: UIView) {
+        
+        viewModel?.didSelectTravel(travel: travel, cell: cell)
+    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let travel = travels[indexPath.row]
-        
-        
+
         let cell = collectionView.cellForItem(at: indexPath) as! TravelCollectionViewCell
+        self.selectTravel(travel: travel, cell: cell.cardView)
+//        print(collectionView.contentOffset)
         
-        viewModel?.didSelectTravel(travel: travel, cell: cell.cardView)
     }
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Сергей Курочкин. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct DetailsViewModel {
     let router: TravelRouter.Routes

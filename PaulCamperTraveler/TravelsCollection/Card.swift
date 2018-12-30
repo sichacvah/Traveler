@@ -31,6 +31,18 @@ class Card: UIView {
         }
     }
     
+    var shadowOpacity: Float = 0.4 {
+        didSet {
+            self.layer.shadowOpacity = shadowOpacity
+        }
+    }
+    
+    var shadowColor: UIColor = .gray {
+        didSet {
+            self.layer.shadowColor = shadowColor.cgColor
+        }
+    }
+    
     var label: String = "" {
         didSet {
             labelView.text = label
@@ -43,17 +55,7 @@ class Card: UIView {
         }
     }
     
-    var shadowOpacity: Float = 0.4 {
-        didSet {
-            self.layer.shadowOpacity = shadowOpacity
-        }
-    }
     
-    var shadowColor: UIColor = .gray {
-        didSet {
-            self.layer.shadowColor = shadowColor.cgColor
-        }
-    }
     
     var backgroundImageUrlString: String? {
         didSet {
@@ -189,7 +191,6 @@ class Card: UIView {
         textView.lineBreakMode = .byTruncatingTail
         textView.numberOfLines = 0
         textView.textAlignment = .left
-
         self.layout()
     }
     

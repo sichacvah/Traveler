@@ -76,7 +76,7 @@ class PresentCardAnimator: NSObject, UIViewControllerAnimatedTransitioning, Anim
 //        let cardFromView   = fromScreen.view!
         let duration = self.transitionDuration(using: transitionContext)
         
-        let finalDuration = duration * TimeInterval((containerView.bounds.height + fromCellFrame.minY) / containerView.bounds.height)
+        let finalDuration = duration
         
         let animationContainerView = UIView()
         animationContainerView.translatesAutoresizingMaskIntoConstraints = false

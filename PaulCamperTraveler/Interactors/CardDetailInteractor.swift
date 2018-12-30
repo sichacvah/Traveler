@@ -24,18 +24,18 @@ class CardDetailInteractor: UIPercentDrivenInteractiveTransition {
     }
     
     
-    private lazy var dismissalPanGesture: DismissalPanGesture = {
-        let pan = DismissalPanGesture()
-        pan.maximumNumberOfTouches = 1
-        return pan
-    }()
-    
-    private lazy var dismissalScreenEdgePanGesture: DismissalScreenEdgePanGesture = {
-        let pan = DismissalScreenEdgePanGesture()
-        pan.edges = .left
-        return pan
-    }()
-    
+//    private lazy var dismissalPanGesture: DismissalPanGesture = {
+//        let pan = DismissalPanGesture()
+//        pan.maximumNumberOfTouches = 1
+//        return pan
+//    }()
+//    
+//    private lazy var dismissalScreenEdgePanGesture: DismissalScreenEdgePanGesture = {
+//        let pan = DismissalScreenEdgePanGesture()
+//        pan.edges = .left
+//        return pan
+//    }()
+//    
     private func setupBackGesture(view: UIView) {
         
     }
