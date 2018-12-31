@@ -18,15 +18,14 @@
 		EE0EFA1221D002BE008A6601 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EFA1121D002BE008A6601 /* Router.swift */; };
 		EE0EFA1521D00577008A6601 /* TravelRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EFA1421D00577008A6601 /* TravelRoute.swift */; };
 		EE0EFA1721D00B1E008A6601 /* TravelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0EFA1621D00B1E008A6601 /* TravelsViewModel.swift */; };
-		EE1F69C821D0AB9700ABDE41 /* CardPresentationAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1F69C721D0AB9700ABDE41 /* CardPresentationAnimator.swift */; };
 		EE6732C821D2094900BD72E5 /* TravelDetailsModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732C721D2094900BD72E5 /* TravelDetailsModuleBuilder.swift */; };
 		EE6732CA21D209E400BD72E5 /* TravelsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732C921D209E400BD72E5 /* TravelsRouter.swift */; };
 		EE6732CC21D20A3C00BD72E5 /* DetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732CB21D20A3C00BD72E5 /* DetailsViewModel.swift */; };
 		EE6732CE21D220E800BD72E5 /* TravelRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732CD21D220E800BD72E5 /* TravelRouter.swift */; };
 		EE6732D021D2214800BD72E5 /* CardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6732CF21D2214800BD72E5 /* CardAnimator.swift */; };
 		EE92ABB721D7244400D651F7 /* CardDetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE92ABB621D7244400D651F7 /* CardDetailInteractor.swift */; };
+		EE9D7A6621D9A05F00714045 /* CardPresentationAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9D7A6521D9A05F00714045 /* CardPresentationAnimation.swift */; };
 		EEDB99FB21C9F99B0054C1DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDB99FA21C9F99B0054C1DD /* AppDelegate.swift */; };
-		EEDB9A0021C9F99B0054C1DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEDB99FE21C9F99B0054C1DD /* Main.storyboard */; };
 		EEDB9A0221C9F99D0054C1DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEDB9A0121C9F99D0054C1DD /* Assets.xcassets */; };
 		EEDB9A0521C9F99D0054C1DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEDB9A0321C9F99D0054C1DD /* LaunchScreen.storyboard */; };
 		EEDB9A0E21C9F9E00054C1DD /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDB9A0D21C9F9E00054C1DD /* Travel.swift */; };
@@ -52,16 +51,15 @@
 		EE0EFA1121D002BE008A6601 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EE0EFA1421D00577008A6601 /* TravelRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelRoute.swift; sourceTree = "<group>"; };
 		EE0EFA1621D00B1E008A6601 /* TravelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsViewModel.swift; sourceTree = "<group>"; };
-		EE1F69C721D0AB9700ABDE41 /* CardPresentationAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPresentationAnimator.swift; sourceTree = "<group>"; };
 		EE6732C721D2094900BD72E5 /* TravelDetailsModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelDetailsModuleBuilder.swift; sourceTree = "<group>"; };
 		EE6732C921D209E400BD72E5 /* TravelsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelsRouter.swift; sourceTree = "<group>"; };
 		EE6732CB21D20A3C00BD72E5 /* DetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewModel.swift; sourceTree = "<group>"; };
 		EE6732CD21D220E800BD72E5 /* TravelRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelRouter.swift; sourceTree = "<group>"; };
 		EE6732CF21D2214800BD72E5 /* CardAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnimator.swift; sourceTree = "<group>"; };
 		EE92ABB621D7244400D651F7 /* CardDetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailInteractor.swift; sourceTree = "<group>"; };
+		EE9D7A6521D9A05F00714045 /* CardPresentationAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPresentationAnimation.swift; sourceTree = "<group>"; };
 		EEDB99F721C9F99B0054C1DD /* PaulCamperTraveler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaulCamperTraveler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEDB99FA21C9F99B0054C1DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EEDB99FF21C9F99B0054C1DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EEDB9A0121C9F99D0054C1DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EEDB9A0421C9F99D0054C1DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EEDB9A0621C9F99D0054C1DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				EE0EFA0F21D00086008A6601 /* Animator.swift */,
-				EE1F69C721D0AB9700ABDE41 /* CardPresentationAnimator.swift */,
 				EE6732CF21D2214800BD72E5 /* CardAnimator.swift */,
 			);
 			path = Animators;
@@ -189,6 +186,14 @@
 			path = Interactors;
 			sourceTree = "<group>";
 		};
+		EE9D7A6421D99F0000714045 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				EE9D7A6521D9A05F00714045 /* CardPresentationAnimation.swift */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		EEDB99EE21C9F99B0054C1DD = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +215,7 @@
 		EEDB99F921C9F99B0054C1DD /* PaulCamperTraveler */ = {
 			isa = PBXGroup;
 			children = (
+				EE9D7A6421D99F0000714045 /* Animations */,
 				EE92ABB521D7242A00D651F7 /* Interactors */,
 				EE6732C621D2092800BD72E5 /* Extensions */,
 				EE6732C521D2077200BD72E5 /* TravelDetails */,
@@ -218,7 +224,6 @@
 				EE0EF96521CCD55E008A6601 /* Helpers */,
 				EEDB9A0C21C9F9C90054C1DD /* Model */,
 				EEDB99FA21C9F99B0054C1DD /* AppDelegate.swift */,
-				EEDB99FE21C9F99B0054C1DD /* Main.storyboard */,
 				EEDB9A0121C9F99D0054C1DD /* Assets.xcassets */,
 				EEDB9A0321C9F99D0054C1DD /* LaunchScreen.storyboard */,
 				EEDB9A0621C9F99D0054C1DD /* Info.plist */,
@@ -299,7 +304,6 @@
 			files = (
 				EEDB9A0521C9F99D0054C1DD /* LaunchScreen.storyboard in Resources */,
 				EEDB9A0221C9F99D0054C1DD /* Assets.xcassets in Resources */,
-				EEDB9A0021C9F99B0054C1DD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE9D7A6621D9A05F00714045 /* CardPresentationAnimation.swift in Sources */,
 				EE0EFA1521D00577008A6601 /* TravelRoute.swift in Sources */,
 				EEDB9A1A21CA01BA0054C1DD /* TravelCollectionViewController.swift in Sources */,
 				EE6732D021D2214800BD72E5 /* CardAnimator.swift in Sources */,
@@ -375,7 +380,6 @@
 				EE0EF96721CCD56E008A6601 /* LayoutHelper.swift in Sources */,
 				EE0EF8C821CAB1CD008A6601 /* UIView+extensions.swift in Sources */,
 				EE0EFA1221D002BE008A6601 /* Router.swift in Sources */,
-				EE1F69C821D0AB9700ABDE41 /* CardPresentationAnimator.swift in Sources */,
 				EEDB9A1C21CA124D0054C1DD /* TravelCollectionViewCell.swift in Sources */,
 				EE0EFA0021CD0989008A6601 /* DetailsViewController.swift in Sources */,
 				EE6732C821D2094900BD72E5 /* TravelDetailsModuleBuilder.swift in Sources */,
@@ -388,14 +392,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		EEDB99FE21C9F99B0054C1DD /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EEDB99FF21C9F99B0054C1DD /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		EEDB9A0321C9F99D0054C1DD /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

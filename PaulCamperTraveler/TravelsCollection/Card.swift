@@ -79,7 +79,7 @@ class Card: UIView {
         }
     }
     
-    var cardRadius: CGFloat = 16 {
+    var cardRadius: CGFloat = 14 {
         didSet {
             self.layer.cornerRadius = cardRadius
         }

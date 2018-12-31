@@ -10,10 +10,5 @@ import UIKit
 
 final class TravelRouter: Router<DetailsViewController> {
     typealias Routes = Closable
-    var cell: UIView?
-    
-    init(cell: UIView) {
-        self.cell = cell
-    }
 }
 
