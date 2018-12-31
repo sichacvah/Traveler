@@ -163,8 +163,6 @@ class CardDetailInteractor: NSObject, Interactor {
         let currentLocation = gesture.location(in: nil)
 
         let progress = isScreenEdgePan ? (gesture.translation(in: targetAnimatedView).x / 100) : (currentLocation.y - startingPoint.y) / 100
-
-        print("STATE", gesture.state.rawValue)
         
         switch gesture.state {
         case .began:
