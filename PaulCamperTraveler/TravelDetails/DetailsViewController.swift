@@ -9,7 +9,7 @@
 import UIKit
 import Nuke
 
-class DetailsViewController: UIViewController, UIScrollViewDelegate {
+class DetailsViewController: UIViewController, UIGestureRecognizerDelegate {
     public var viewModel: DetailsViewModel?
     private let titleView: UILabel = {
         let label = UILabel()
@@ -19,6 +19,10 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         return label
     }()
     
+    public func setCornerRadius(_ radius: CGFloat) {
+        cardContentView.layer.cornerRadius = 14
+    }
+
     private let closeView: UIButton = {
         let view = UIButton()
         view.setTitle("✕", for: .normal)
@@ -36,8 +40,8 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         blur.isUserInteractionEnabled = false
         return view
     }()
-
-    private let descriptionView: UILabel = {
+    
+    private lazy var descriptionView: UILabel = {
         let description = UILabel()
         description.translatesAutoresizingMaskIntoConstraints = false
         description.font = UIFont.systemFont(ofSize: 18, weight: .light)
@@ -50,6 +54,7 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         description.textAlignment = .left
         return description
     }()
+
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,14 +63,31 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         return scrollView
     }()
     
-    public func getScrollView() -> UIScrollView {
-        return scrollView
+    public let cardContentView: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = 14
+        view.backgroundColor = .white
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    public func setScrollViewDelegate(delegate: UIScrollViewDelegate) {
+        self.scrollView.delegate = delegate
     }
     
-    var statusBarStyle: UIStatusBarStyle = .default
+    public func getScrollView() -> UIScrollView {
+        return self.scrollView
+    }
+    
+    var statusBarStyle: UIStatusBarStyle = .lightContent
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return statusBarStyle
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
     }
     
     init(viewModel: DetailsViewModel) {
@@ -79,8 +101,13 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .none
         setupView()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        scrollView.scrollIndicatorInsets = .init(top: max(-view.safeAreaInsets.top,0), left: 0, bottom: 0, right: 0)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -108,20 +135,23 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupView() {
-        view.addSubview(scrollView)
+        view.addSubview(cardContentView)
+        cardContentView.edges(to: view)
         
+        cardContentView.addSubview(scrollView)
 
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: cardContentView.leadingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: cardContentView.topAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: cardContentView.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: cardContentView.bottomAnchor).isActive = true
         scrollView.addSubview(imageView)
+        scrollView.clipsToBounds = true
 
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6).isActive = true
-        imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalTo: cardContentView.heightAnchor, multiplier: 0.6).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: cardContentView.leadingAnchor).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: cardContentView.trailingAnchor).isActive = true
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
 
@@ -134,191 +164,23 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate {
         descriptionView.text = viewModel?.travel.description
         
         titleView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 16).isActive = true
-        titleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        titleView.leadingAnchor.constraint(equalTo: cardContentView.leadingAnchor, constant: 16).isActive = true
+        titleView.trailingAnchor.constraint(equalTo: cardContentView.trailingAnchor, constant: -16).isActive = true
         
         scrollView.addSubview(descriptionView)
         descriptionView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 16).isActive = true
-        descriptionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        descriptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        descriptionView.leadingAnchor.constraint(equalTo: cardContentView.leadingAnchor, constant: 16).isActive = true
+        descriptionView.trailingAnchor.constraint(equalTo: cardContentView.trailingAnchor, constant: -16).isActive = true
         descriptionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16).isActive = true
-        view.addSubview(closeView)
+        cardContentView.addSubview(closeView)
         closeView.alpha = 0
         closeView.widthAnchor.constraint(equalToConstant: 28).isActive = true
         closeView.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        closeView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        closeView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        closeView.topAnchor.constraint(equalTo: cardContentView.topAnchor, constant: 20).isActive = true
+        closeView.rightAnchor.constraint(equalTo: cardContentView.rightAnchor, constant: -20).isActive = true
         closeView.addTarget(self, action: #selector(handleClose), for: .touchUpInside)
-        
-        self.setupPanGesture()
+        view.clipsToBounds = false
     }
     
-    final class DismissalPanGesture: UIPanGestureRecognizer {}
-    final class DismissalScreenEdgePanGesture: UIScreenEdgePanGestureRecognizer {}
-
-    private lazy var dismissalPanGesture: DismissalPanGesture = {
-        let pan = DismissalPanGesture()
-        pan.maximumNumberOfTouches = 1
-        return pan
-    }()
-    
-    private lazy var dismissalScreenEdgePanGesture: DismissalScreenEdgePanGesture = {
-        let pan = DismissalScreenEdgePanGesture()
-        pan.edges = .left
-        return pan
-    }()
-
-    private func setupPanGesture() {
-        scrollView.delegate = self
-        dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-        dismissalScreenEdgePanGesture.delegate = self
-        
-        dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-        dismissalPanGesture.delegate = self
-        
-        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-        dismissalScreenEdgePanGesture.delegate = self
-        
-        // Make drag down/scroll pan gesture waits til screen edge pan to fail first to begin
-        dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
-        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
-        
-//        view.addGestureRecognizer(dismissalPanGesture)
-//        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
-        view.layoutIfNeeded()
-    }
-    
-    func didSuccessfullyDragDownToDismiss() {
-        viewModel?.closeEvent()
-    }
-    
-    func userWillCancelDissmissalByDraggingToTop(velocityY: CGFloat) {}
-    
-    func didCancelDismissalTransition() {
-        // Clean up
-        interactiveStartingPoint = nil
-        dismissalAnimator = nil
-        draggingDownToDismiss = false
-    }
-    
-    var interactiveStartingPoint: CGPoint?
-    var dismissalAnimator: UIViewPropertyAnimator?
-    var draggingDownToDismiss = false
-    
-    @objc private func handleDismissalPan(gesture: UIPanGestureRecognizer) {
-        let isScreenEdgePan = gesture.isKind(of: DismissalScreenEdgePanGesture.self)
-        let canStartDragDownToDismissPan = !isScreenEdgePan && !draggingDownToDismiss
-        if canStartDragDownToDismissPan { return }
-        let targetAnimatedView = gesture.view!
-        
-        let startingPoint: CGPoint
-        
-        if let p = interactiveStartingPoint {
-            startingPoint = p
-        } else {
-            // Initial location
-            startingPoint = gesture.location(in: nil)
-            interactiveStartingPoint = startingPoint
-        }
-
-        let currentLocation = gesture.location(in: nil)
-        let progress = isScreenEdgePan ? (gesture.translation(in: targetAnimatedView).x / 100) : (currentLocation.y - startingPoint.y) / 100
-        let targetShrinkScale: CGFloat = (self.view.bounds.width - 48) / self.view.bounds.width
-        let targetCornerRadius: CGFloat = 14
-        
-        func createInteractiveDismissalAnimatorIfNeeded() -> UIViewPropertyAnimator {
-            if let animator = dismissalAnimator {
-                return animator
-            } else {
-                let animator = UIViewPropertyAnimator(duration: 0, curve: .linear, animations: {
-                    targetAnimatedView.transform = .init(scaleX: targetShrinkScale, y: targetShrinkScale)
-                    targetAnimatedView.layer.cornerRadius = targetCornerRadius
-                })
-                animator.isReversed = false
-                animator.pauseAnimation()
-                animator.fractionComplete = progress
-                return animator
-            }
-        }
-        
-        switch gesture.state {
-        case .began:
-            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded()
-            
-        case .changed:
-            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded()
-            
-            let actualProgress = progress
-            let isDismissalSuccess = actualProgress >= 1.0
-            
-            dismissalAnimator!.fractionComplete = actualProgress
-            
-            if isDismissalSuccess {
-                dismissalAnimator!.stopAnimation(false)
-                dismissalAnimator!.addCompletion { [unowned self] (pos) in
-                    switch pos {
-                    case .end:
-                        self.didSuccessfullyDragDownToDismiss()
-                    default:
-                        fatalError("Must finish dismissal at end!")
-                    }
-                }
-                dismissalAnimator!.finishAnimation(at: .end)
-            }
-            
-        case .ended, .cancelled:
-            if dismissalAnimator == nil {
-                // Gesture's too quick that it doesn't have dismissalAnimator!
-                print("Too quick there's no animator!")
-                didCancelDismissalTransition()
-                return
-            }
-            // NOTE:
-            // If user lift fingers -> ended
-            // If gesture.isEnabled -> cancelled
-            // Ended, Animate back to start
-            dismissalAnimator!.pauseAnimation()
-            dismissalAnimator!.isReversed = true
-            
-            // Disable gesture until reverse closing animation finishes.
-            gesture.isEnabled = false
-            dismissalAnimator!.addCompletion { [unowned self] (pos) in
-                self.didCancelDismissalTransition()
-                gesture.isEnabled = true
-            }
-            dismissalAnimator!.startAnimation()
-        default:
-            fatalError("Impossible gesture state? \(gesture.state.rawValue)")
-        }
-        
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if draggingDownToDismiss || (scrollView.isTracking && scrollView.contentOffset.y < 0) {
-            draggingDownToDismiss = true
-            scrollView.contentOffset = .zero
-        }
-        
-        scrollView.showsVerticalScrollIndicator = !draggingDownToDismiss
-    }
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        // Without this, when user drag down and lift the finger fast at the top, there'll be some scrolling going on.
-        // This check prevents that.
-        if velocity.y > 0 && scrollView.contentOffset.y <= 0 {
-            scrollView.contentOffset = .zero
-        }
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        scrollView.scrollIndicatorInsets = .init(top: view.bounds.height, left: 0, bottom: 0, right: 0)
-    }
 }
 
-extension DetailsViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-}

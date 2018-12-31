@@ -7,51 +7,71 @@
 //
 
 import UIKit
-//UIPercentDrivenInteractiveTransition
-class CardDetailInteractor: NSObject, UIViewControllerInteractiveTransitioning {
-    public var wantsInteractiveStart: Bool {
-        return true
-    }
 
+protocol Interactor: UIViewControllerInteractiveTransitioning {
+    var transitionInProgress: Bool { get }
+}
+
+final class DismissalPanGesture: UIPanGestureRecognizer {}
+final class DismissalScreenEdgePanGesture: UIScreenEdgePanGestureRecognizer {}
+
+class CardDetailInteractor: NSObject, Interactor {
+    var transitionInProgress: Bool = false
+    var draggingDownToDismiss: Bool = false
+    let params: AnimationParams
+    let viewModel: DetailsViewModel?
+    var transitionContext: UIViewControllerContextTransitioning?
+    var interactiveStartingPoint: CGPoint?
+    public var wantsInteractiveStart = true
+    fileprivate var animator: UIViewImplicitlyAnimating?
+    var scrollView: UIScrollView
+    
+    private lazy var dismissalPanGesture: DismissalPanGesture = {
+        let pan = DismissalPanGesture()
+        pan.maximumNumberOfTouches = 1
+        return pan
+    }()
+    
+    private lazy var dismissalScreenEdgePanGesture: DismissalScreenEdgePanGesture = {
+        let pan = DismissalScreenEdgePanGesture()
+        pan.edges = .left
+        return pan
+    }()
+    
+    init?(attachTo viewController: UIViewController, params: AnimationParams) {
+        if let vc = viewController as? DetailsViewController {
+            self.params = params
+            self.viewModel = vc.viewModel
+            self.scrollView = vc.getScrollView()
+            super.init()
+            vc.setScrollViewDelegate(delegate: self)
+
+            setupBackGesture(view: vc.view)
+        } else {
+            return nil
+        }
+    }
+    
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
-        self.transitionContext = transitionContext
-        self.animator = interruptibleAnimator(using: transitionContext)
+        self.animator = animator(using: transitionContext)
     }
     
-    func updateInteractiveTransition(_ progress: CGFloat) {
-        transitionContext?.updateInteractiveTransition(progress)
-        self.animator?.fractionComplete = progress
-    }
-    
-    func finishInteractiveTransition() {
-        guard let transitionContext = self.transitionContext else { return }
-        transitionContext.finishInteractiveTransition()
-        transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-        self.animator?.fractionComplete = 1.0
-        self.animator?.stopAnimation(false)
-        self.animator?.finishAnimation(at: .end)
-    }
-    
-    func cancelInteractiveTransition() {
-        print("CANCEL")
-        guard let transitionContext = self.transitionContext else { return }
-        transitionContext.cancelInteractiveTransition()
-        transitionContext.completeTransition(false)
-        self.animator?.fractionComplete = 0.0
-        self.animator?.stopAnimation(false)
-        self.animator?.finishAnimation(at: .end)
+    fileprivate func setupBackGesture(view: UIView) {
+        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleBackGesture(gesture:)))
+        dismissalScreenEdgePanGesture.delegate = self
         
+        dismissalPanGesture.addTarget(self, action: #selector(handleBackGesture(gesture:)))
+        dismissalPanGesture.delegate = self
+        
+        dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
+        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
+        
+        view.addGestureRecognizer(dismissalPanGesture)
+        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
     }
     
-    
-    private var progress: CGFloat = 0
-    private var animator: UIViewImplicitlyAnimating?
-    private var transitionContext: UIViewControllerContextTransitioning?
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
-    }
-    
-    public func interruptibleAnimator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+    func animator(using transitionContext: UIViewControllerContextTransitioning) -> UIViewImplicitlyAnimating {
+        self.transitionContext = transitionContext
         let fromScreen = transitionContext.viewController(forKey: .from) as! DetailsViewController
         let toScreen = transitionContext.viewController(forKey: .to)
         let fromView = fromScreen.view!
@@ -59,86 +79,99 @@ class CardDetailInteractor: NSObject, UIViewControllerInteractiveTransitioning {
         let containerView = transitionContext.containerView
         containerView.insertSubview(toView, at: 0)
         let blurEffect = UIBlurEffect(style: .prominent)
-
+        
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.frame = transitionContext.containerView.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         containerView.insertSubview(blurEffectView, at: 1)
+
         let animator = UIViewPropertyAnimator(duration: 0, curve: .linear, animations: {
             fromView.transform = .init(scaleX: 0.86, y: 0.86)
-            fromView.layer.cornerRadius = 14
+            fromScreen.cardContentView.layer.cornerRadius = 14
         })
         
         animator.addCompletion { _ in
-           
+            
             if transitionContext.transitionWasCancelled {
-//                fromView.edges(to: transitionContext.containerView, top: 0)
-                blurEffectView.removeFromSuperview()
-                toView.removeFromSuperview()
-                fromView.layer.cornerRadius = 0
-                fromView.transform = .identity
-            } else {
-                UIView.animate(withDuration: 0.2, animations: {
-//                    blurEffectView.alpha = 0
+                UIView.animate(withDuration: 0.16, animations: {
+                    fromScreen.cardContentView.layer.cornerRadius = 0
+                    fromView.transform = .identity
                 }, completion: { _ in
                     blurEffectView.removeFromSuperview()
+                    toView.removeFromSuperview()
+                    transitionContext.completeTransition(false)
                 })
+            } else {
+                blurEffectView.removeFromSuperview()
+                CardDismissAnimation.animate(fromView, params: self.params, container: containerView, cardContentView: fromScreen.cardContentView, completion: {
+                    transitionContext.completeTransition(true)
+                })
+                
             }
+            self.animator = nil
             
         }
         animator.isReversed = false
         animator.pauseAnimation()
-        animator.fractionComplete = progress
+        animator.fractionComplete = 0.0
         return animator
     }
     
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {}
-    
-    private weak var navigationController: UINavigationController?
-    var shouldCompleteTransition = false
-    var transitionInProgress = false
-    
-    init?(attachTo viewController: UIViewController) {
-        if let nav = viewController.navigationController {
-            self.navigationController = nav
-            super.init()
-            setupBackGesture(view: viewController.view)
-        } else {
-            return nil
+    func updateInteractiveTransition(_ progress: CGFloat) {
+        transitionContext?.updateInteractiveTransition(progress)
+        self.animator?.fractionComplete = progress
+        if progress > 1.0 {
+            self.transitionContext?.finishInteractiveTransition()
+            self.animator?.stopAnimation(false)
+            self.animator?.finishAnimation(at: .end)
         }
     }
     
-    final class DismissalPanGesture: UIPanGestureRecognizer {}
-    final class DismissalScreenEdgePanGesture: UIScreenEdgePanGestureRecognizer {}
-    
-    private lazy var dismissalPanGesture: DismissalPanGesture = {
-        let pan = DismissalPanGesture()
-        pan.maximumNumberOfTouches = 1
-        return pan
-    }()
-
-    private lazy var dismissalScreenEdgePanGesture: DismissalScreenEdgePanGesture = {
-        let pan = DismissalScreenEdgePanGesture()
-        pan.edges = .left
-        return pan
-    }()
-    
-    private func setupBackGesture(view: UIView) {
-        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleBackGesture(gesture:)))
-        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
+    func finishInteractiveTransition() {
+        guard let transitionContext = self.transitionContext else { return }
+        transitionContext.finishInteractiveTransition()
+        draggingDownToDismiss = false
+        self.animator?.stopAnimation(false)
+        self.animator?.finishAnimation(at: .end)
     }
     
-    @objc private func handleBackGesture(gesture: UIScreenEdgePanGestureRecognizer) {
-        let viewTransition = gesture.translation(in: gesture.view?.superview)
-        let progress = viewTransition.x / self.navigationController!.view.frame.width
+    func cancelInteractiveTransition() {
+        guard let transitionContext = self.transitionContext else { return }
+        transitionContext.cancelInteractiveTransition()
+        draggingDownToDismiss = false
+        self.animator?.fractionComplete = 0.0
+        self.animator?.stopAnimation(false)
+        self.animator?.finishAnimation(at: .current)
+    }
+    
+    
+    @objc func handleBackGesture(gesture: UIPanGestureRecognizer) {
+//        let viewTransition = gesture.translation(in: gesture.view?.superview)
+        let isScreenEdgePan = gesture.isKind(of: DismissalScreenEdgePanGesture.self)
+        let canStartDragDownToDismissPan = !isScreenEdgePan && !self.draggingDownToDismiss
+        if canStartDragDownToDismissPan { return }
+        
+        let startingPoint: CGPoint
+        
+        let targetAnimatedView = gesture.view!
+        if let p = self.interactiveStartingPoint {
+            startingPoint = p
+        } else {
+            // Initial location
+            startingPoint = gesture.location(in: nil)
+            self.interactiveStartingPoint = startingPoint
+        }
+        let currentLocation = gesture.location(in: nil)
+
+        let progress = isScreenEdgePan ? (gesture.translation(in: targetAnimatedView).x / 100) : (currentLocation.y - startingPoint.y) / 100
+
+        print("STATE", gesture.state.rawValue)
         
         switch gesture.state {
         case .began:
             transitionInProgress = true
-            navigationController?.popViewController(animated: true)
+            viewModel?.closeEvent()
             break
         case .changed:
-            shouldCompleteTransition = progress > 0.5
             updateInteractiveTransition(progress)
             break
         case .cancelled:
@@ -147,10 +180,41 @@ class CardDetailInteractor: NSObject, UIViewControllerInteractiveTransitioning {
             break
         case .ended:
             transitionInProgress = false
-            shouldCompleteTransition ? finishInteractiveTransition() : cancelInteractiveTransition()
+            progress > 1.0 ? finishInteractiveTransition() : cancelInteractiveTransition()
             break
+//        default:
         default:
-            return
+            fatalError("Impossible gesture state? \(gesture.state.rawValue)")
         }
+    }
+}
+
+extension CardDetailInteractor: UIScrollViewDelegate {
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if velocity.y > 0 && scrollView.contentOffset.y <= 0 {
+            scrollView.contentOffset = .zero
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.draggingDownToDismiss || (scrollView.isTracking && scrollView.contentOffset.y < 0) {
+            if !self.draggingDownToDismiss {
+                transitionInProgress = true
+                viewModel?.closeEvent()
+            }
+            self.draggingDownToDismiss = true
+            scrollView.contentOffset = .zero
+            
+        }
+        
+        scrollView.showsVerticalScrollIndicator = !self.draggingDownToDismiss
+    }
+}
+
+
+extension CardDetailInteractor: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

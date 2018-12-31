@@ -22,8 +22,21 @@ extension TravelRoute where Self: RouterProtocol {
         let detailsModule = TravelDetailsModule(cell: cell, travel: travel)
         let currentCellFrame = cell.layer.presentation()!.frame
         let cardPresentationFrameOnScreen = cell.superview!.convert(currentCellFrame, to: nil)
-        let animator = PresentCardAnimator(fromCellFrame: cardPresentationFrameOnScreen)
-        let transition = PushTransition(animator: animator, isAnimated: true)
+        
+        let cardFrameWithoutTransform = { () -> CGRect in
+            let center = cell.center
+            let size = cell.bounds.size
+            let r = CGRect(
+                x: center.x - size.width / 2,
+                y: center.y - size.height / 2,
+                width: size.width,
+                height: size.height
+            )
+            return cell.superview!.convert(r, to: nil)
+        }()
+        let params = AnimationParams(cell: cell, frame: cardPresentationFrameOnScreen, frameWithoutTransform: cardFrameWithoutTransform)
+        let animator = PresentCardAnimator(params: params)
+        let transition = PushTransition(animator: animator, isAnimated: true, params: params)
         detailsModule.router.openTransition = transition
         detailsModule.viewController.modalPresentationStyle = .custom
         open(detailsModule.viewController, transition: transition)
